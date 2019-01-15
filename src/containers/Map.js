@@ -2,14 +2,11 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { StyleSheet, View, SafeAreaView, Text } from "react-native"
-import { Marker, Callout, MapView } from "react-native-maps"
+import { Marker, Callout } from "react-native-maps"
 import ClusteredMapView from "react-native-maps-super-cluster"
 
-// data
-import coordsData from "../../mock/coords"
-
 // redux
-import { onGetCoordinates } from "../redux/MapRedux"
+import { onCoordinatesRequest } from "../redux/MapRedux"
 
 const styles = StyleSheet.create({
   container: {
@@ -46,7 +43,7 @@ const styles = StyleSheet.create({
 
 type Props = {
   coords: Array<*>,
-  onGetCoordinates: typeof onGetCoordinates,
+  onCoordinatesRequest: typeof onCoordinatesRequest,
   region: any,
 }
 
@@ -54,8 +51,8 @@ class Map extends Component<Props> {
   static navigationOptions = { title: "Mapa" }
 
   componentDidMount() {
-    const { onGetCoordinates } = this.props
-    onGetCoordinates(coordsData)
+    const { onCoordinatesRequest } = this.props
+    onCoordinatesRequest()
   }
 
   renderCluster = (cluster, onPress) => {
@@ -120,7 +117,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {
-  onGetCoordinates,
+  onCoordinatesRequest,
 }
 
 export default connect(
