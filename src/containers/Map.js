@@ -45,14 +45,15 @@ type Props = {
   coords: Array<*>,
   onCoordinatesRequest: typeof onCoordinatesRequest,
   region: any,
+  navigation: any,
 }
 
 class Map extends Component<Props> {
   static navigationOptions = { title: "Mapa" }
 
   componentDidMount() {
-    const { onCoordinatesRequest } = this.props
-    onCoordinatesRequest()
+    const {onCoordinatesRequest, navigation} = this.props;
+    onCoordinatesRequest(navigation.state.params.regionName)
   }
 
   renderCluster = (cluster, onPress) => {
@@ -111,7 +112,7 @@ class Map extends Component<Props> {
   }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   coords: state.coords.items,
   region: state.coords.region,
 })

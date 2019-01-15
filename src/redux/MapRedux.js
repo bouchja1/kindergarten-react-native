@@ -1,6 +1,6 @@
 import { from } from "rxjs"
 import { filter, switchMap, flatMap, catchError } from "rxjs/operators"
-import {loadCoordinates, loadRegions} from "../services/api"
+import {loadCoordinates} from "../services/api"
 
 export const initialState = {
   loading: false,
@@ -14,8 +14,9 @@ export const initialState = {
   error: null,
 }
 
-export const onCoordinatesRequest = () => ({
+export const onCoordinatesRequest = (regionName) => ({
   type: "coordinates/ON_COORDINATES_REQ",
+  regionName,
 })
 
 export const onCoordinatesReqSuccess = (coords) => ({
@@ -63,7 +64,7 @@ export const reducer = (state = initialState, action) => {
 // action$ - dolar znaci subject (je to ale jen konvence, muze se to jmenovat jakkoliv)
 export const coordinatesReqEpic = action$ => action$.pipe(
   filter((action) => action.type === "coordinates/ON_COORDINATES_REQ"),
-  switchMap(() => from(loadCoordinates()).pipe(
+  switchMap((action) => from(loadCoordinates(action.regionName)).pipe(
     // ted tady v idealnim pripade mame data, ale muze nastat i error
     flatMap((response) => from([onCoordinatesReqSuccess(response.data.data)])),
     catchError((err) => from([onCoordinatesReqFail(err)]))

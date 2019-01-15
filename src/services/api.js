@@ -18,8 +18,12 @@ axios.interceptors.request.use(request => {
   }
 })
 
-export const loadCoordinates = () => {
-  return axios.get("/coordinates")
+export const loadCoordinates = (regionName) => {
+  return axios.get("/coordinates", {
+    params: {
+      regionName,
+    },
+  })
 }
 
 export const loadRegions = () => {

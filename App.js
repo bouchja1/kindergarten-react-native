@@ -9,6 +9,7 @@ import {combineEpics, createEpicMiddleware} from "redux-observable" // fce k ini
 // redux
 import { reducer as moviesReducer } from "./src/redux/MoviesRedux"
 import { reducer as mapReducer, coordinatesReqEpic } from "./src/redux/MapRedux"
+import { reducer as regionsReducer, regionsReqEpic } from "./src/redux/RegionsRedux"
 
 // containers
 import Navigator from "./src/containers/Navigator"
@@ -28,6 +29,7 @@ const store = createStore(
     {
       movies: moviesReducer,
       coords: mapReducer,
+      regions: regionsReducer,
     },
   ),
   initialState,
@@ -36,7 +38,7 @@ const store = createStore(
 
 // middleware je API reduceru
 // run() by se melo poustet az pote co vytvorime store
-epicMiddleware.run(combineEpics(coordinatesReqEpic)) // do combine epics se vkladaji ty epics
+epicMiddleware.run(combineEpics(coordinatesReqEpic, regionsReqEpic)) // do combine epics se vkladaji ty epics
 
 export default class App extends React.PureComponent<null> {
   render() {
