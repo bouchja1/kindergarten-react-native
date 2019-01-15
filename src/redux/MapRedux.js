@@ -18,9 +18,9 @@ export const onCoordinatesRequest = () => ({
   type: "coordinates/ON_COORDINATES_REQ",
 })
 
-export const onCoordinatesReqSuccess = (movies) => ({
+export const onCoordinatesReqSuccess = (coords) => ({
   type: "coordinates/ON_COORDINATES_SUCCESS",
-  movies,
+  coords,
 })
 
 export const onCoordinatesReqFail = (error) => ({
@@ -36,12 +36,19 @@ export const reducer = (state = initialState, action) => {
         loading: true,
         error: null,
       }
-    case "coordinates/ON_COORDINATES_SUCCESS":
+    case "coordinates/ON_COORDINATES_SUCCESS": {
+      let items = action.coords.coordinates;
+      items = items.map(item => ({
+          ...item,
+          latitude: Number(item.latitude),
+          longitude: Number(item.longitude),
+        }));
       return {
         ...state,
-        items: action.coords.data.coordinates,
+        items,
         loading: false,
       }
+    }
     case "coordinates/ON_COORDINATES_FAIL":
       return {
         ...state,
@@ -58,7 +65,7 @@ export const coordinatesReqEpic = action$ => action$.pipe(
   filter((action) => action.type === "coordinates/ON_COORDINATES_REQ"),
   switchMap(() => from(loadCoordinates()).pipe(
     // ted tady v idealnim pripade mame data, ale muze nastat i error
-    flatMap((response) => from([onCoordinatesReqSuccess(response)])),
+    flatMap((response) => from([onCoordinatesReqSuccess(response.data.data)])),
     catchError((err) => from([onCoordinatesReqFail(err)]))
   ))
 )
