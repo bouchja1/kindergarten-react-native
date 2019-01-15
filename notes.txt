@@ -1,0 +1,20 @@
+Aby fungovaly mapy:
+
+https://github.com/react-native-community/react-native-maps/blob/master/docs/installation.md
+https://github.com/anhtuank7c/maps-example
+
+manual link:
+https://medium.freecodecamp.org/how-to-integrate-maps-in-react-native-using-react-native-maps-5745490fe055
+
+Android:
+========
+
+- location sdk not found
+https://stackoverflow.com/questions/32634352/react-native-android-build-failed-sdk-location-not-found
+ale to mi nepomohlo, pomuze otevreni android folder v android studiu a ten soubor to tam doplni
+
+- pri buildu to padlo na licence, musi se prijmout:
+https://stackoverflow.com/questions/39760172/you-have-not-accepted-the-license-agreements-of-the-following-sdk-components
+
+- pro android jsem si musel vytvorit virtualni device:
+https://developer.android.com/studio/run/managing-avds
