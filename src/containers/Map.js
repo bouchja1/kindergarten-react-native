@@ -1,10 +1,9 @@
 // @flow
-import React from "react"
+import React, { Component } from "react"
 import { connect } from "react-redux"
-import { StyleSheet, View } from "react-native"
-import MapView from 'react-native-maps'
-import ClusterMarker from "../components/ClusterMarker";
-import { getCluster } from "../utils/MapUtils";
+import { StyleSheet, View, SafeAreaView, Text } from "react-native"
+import { Marker, Callout, MapView } from "react-native-maps"
+import ClusteredMapView from "react-native-maps-super-cluster"
 
 // data
 import coordsData from "../../mock/coords"
@@ -15,16 +14,33 @@ import { onGetCoordinates } from "../redux/MapRedux"
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#F5FCFF",
     alignItems: "center",
     justifyContent: "center",
   },
+  clusterContainer: {
+    width: 30,
+    height: 30,
+    padding: 6,
+    borderWidth: 1,
+    borderRadius: 15,
+    alignItems: "center",
+    borderColor: "#65bc46",
+    justifyContent: "center",
+    backgroundColor: "white",
+  },
+  clusterText: {
+    fontSize: 13,
+    color: "#65bc46",
+    fontWeight: "500",
+    textAlign: "center",
+  },
   map: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     bottom: 0,
-    right: 0
+    right: 0,
   },
 })
 
@@ -34,68 +50,67 @@ type Props = {
   region: any,
 }
 
-class Map extends React.PureComponent<Props> {
+class Map extends Component<Props> {
   static navigationOptions = { title: "Mapa" }
 
   componentDidMount() {
-    const {onGetCoordinates} = this.props
+    const { onGetCoordinates } = this.props
     onGetCoordinates(coordsData)
   }
 
-  renderMarker = (marker, index) => {
-    const key = index + marker.geometry.coordinates[0];
-
-    // If a cluster
-    if (marker.properties) {
-      return (
-        <MapView.Marker
-          key={key}
-          coordinate={{
-            latitude: marker.geometry.coordinates[1],
-            longitude: marker.geometry.coordinates[0]
-          }}
-        >
-          <ClusterMarker count={marker.properties.point_count} />
-        </MapView.Marker>
-      );
-    }
-    // If a single marker
+  renderCluster = (cluster, onPress) => {
+    const { pointCount, coordinate, clusterId } = cluster
     return (
-      <MapView.Marker
-        key={key}
-        coordinate={{
-          latitude: marker.geometry.coordinates[1],
-          longitude: marker.geometry.coordinates[0]
-        }}
-      />
-    );
-  };
+      <Marker identifier={`cluster-${clusterId}`} coordinate={coordinate} onPress={onPress}>
+        <View style={styles.clusterContainer}>
+          <Text style={styles.clusterText}>
+            {pointCount}
+          </Text>
+        </View>
+      </Marker>
+    )
+  }
+
+  renderMarker = (pin) => (
+    <Marker identifier={`pin-${pin.id}`} key={pin.id} coordinate={pin.location}/>
+  )
+
+  processCoords = (originalCoords) => {
+    const points = []
+    for (let i = 0; i < originalCoords.length; i++)
+      points.push({
+        id: `pin${originalCoords[i].id}`,
+        location: { latitude: originalCoords[i].latitude, longitude: originalCoords[i].longitude },
+      })
+    return points
+  }
 
   render() {
     const { coords, region } = this.props
 
-    const allCoords = coords.map(c => ({
-      geometry: {
-        type: "Point",
-        coordinates: [c.longitude, c.latitude],
-      }
-    }));
-
-    const cluster = getCluster(allCoords, region);
+    const processedCoords = this.processCoords(coords)
 
     return (
-      <View style={styles.container}>
-        <MapView
-          provider={MapView.PROVIDER_GOOGLE}
-          style={styles.map}
-          loadingIndicatorColor="#ffbbbb"
-          loadingBackgroundColor="#ffbbbb"
-          region={region}
-        >
-          {cluster.markers.map((marker, index) => this.renderMarker(marker, index))}
-        </MapView>
-      </View>
-    );
+      <SafeAreaView style={styles.container}>
+        <ClusteredMapView
+          style={{ flex: 1 }}
+          data={processedCoords}
+          renderMarker={this.renderMarker}
+          renderCluster={this.renderCluster}
+          initialRegion={{
+            latitude: region.latitude,
+            longitude: region.longitude,
+            latitudeDelta: region.latitudeDelta,
+            longitudeDelta: region.longitudeDelta,
+          }}>
+          {/*
+            Markers rendered as children of ClusteredMapView are not taken in account by the clustering feature,
+            they will just act as they were rendered within a normal react-native-maps instance
+          */}
+        </ClusteredMapView>
+      </SafeAreaView>
+    )
+
   }
 }
 

@@ -3,8 +3,8 @@ export const initialState = {
   region: {
     latitude: 50.0755381,
     longitude: 14.4378005,
-    latitudeDelta: 1,
-    longitudeDelta: 1
+    latitudeDelta: 12,
+    longitudeDelta: 12
   }
 }
 
