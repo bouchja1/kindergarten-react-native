@@ -5,8 +5,10 @@ import { Modal } from "react-native-modal"
 
 export default class MarkerModal extends React.PureComponent<Props> {
   render() {
+    console.log("NOOOO:")
     return (
-      <Modal>
+      <Modal
+        visible>
         <View style={{ flex: 1 }}>
           <Text>I am the modal content!</Text>
         </View>
