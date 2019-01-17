@@ -38,7 +38,10 @@ const store = createStore(
 
 // middleware je API reduceru
 // run() by se melo poustet az pote co vytvorime store
-epicMiddleware.run(combineEpics(coordinatesReqEpic, regionsReqEpic)) // do combine epics se vkladaji ty epics
+epicMiddleware.run(combineEpics(
+  coordinatesReqEpic,
+  regionsReqEpic,
+)) // do combine epics se vkladaji ty epics
 
 export default class App extends React.PureComponent<null> {
   render() {

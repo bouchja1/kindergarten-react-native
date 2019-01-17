@@ -53,7 +53,7 @@ class Map extends Component<Props> {
 
   componentDidMount() {
     const {onCoordinatesRequest, navigation} = this.props;
-    onCoordinatesRequest(navigation.state.params.regionName)
+    onCoordinatesRequest(navigation.state.params.metadata, navigation.state.params.vusc)
   }
 
   renderCluster = (cluster, onPress) => {
@@ -70,7 +70,7 @@ class Map extends Component<Props> {
   }
 
   renderMarker = (pin) => (
-    <Marker identifier={`pin-${pin.id}`} key={pin.id} coordinate={pin.location}/>
+    <Marker identifier={`${pin.id}`} key={pin.id} coordinate={pin.location} onPress={() => console.log("PIN: ", pin) } />
   )
 
   processCoords = (originalCoords) => {

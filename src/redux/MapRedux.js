@@ -14,9 +14,10 @@ export const initialState = {
   error: null,
 }
 
-export const onCoordinatesRequest = (regionName) => ({
+export const onCoordinatesRequest = (metadata, vusc) => ({
   type: "coordinates/ON_COORDINATES_REQ",
-  regionName,
+  metadata,
+  vusc
 })
 
 export const onCoordinatesReqSuccess = (coords) => ({

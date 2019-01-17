@@ -8,7 +8,7 @@ import { ListItem } from "../components"
 import { Colors } from "../themes"
 
 // redux
-import { onRegionsRequest } from "../redux/RegionsRedux"
+import { onTerritoryLoad } from "../redux/RegionsRedux"
 
 const styles = StyleSheet.create({
   container: {
@@ -24,47 +24,45 @@ const styles = StyleSheet.create({
 })
 
 type Props = {
-  regions: Array<*>,
-  onRegionsRequest: typeof onRegionsRequest,
+  territory: any,
+  onTerritoryLoad: typeof onTerritoryLoad,
   navigation: any,
 }
 
-class RegionScreen extends React.PureComponent<Props> {
-  static navigationOptions = { title: "Select region" }
+class TerritoriesScreen extends React.PureComponent<Props> {
+  static navigationOptions = { title: "Select territory" }
 
   componentDidMount() {
-    const { onRegionsRequest } = this.props
-    onRegionsRequest()
+    const { onTerritoryLoad, navigation } = this.props
+    onTerritoryLoad(navigation.state.params.allRegion)
   }
 
-  navigate = item => {
+  navigate = (metadata, vusc) => {
     const { navigation } = this.props
-    navigation.navigate("TerritoriesScreen", {
-      allRegion: item,
-    })
+    navigation.navigate("Map", { metadata, vusc })
   }
 
-  renderItem = ({ item }) => (
-    <ListItem
-      onPress={() => this.navigate(item)}
+  renderItem = ({item}, metadata) => {
+    return <ListItem
+      onPress={() => this.navigate(metadata, item.vusc)}
     >
-      {item.nvusc}
+      {item.name}
     </ListItem>
-  )
+  }
 
-  keyExtractor = item => `item-${item.nvusc}`
+  keyExtractor = item => `item-${item.vusc}`
 
   renderSeparator = () => <View style={styles.listSeparator} />
 
   render() {
-    const { regions } = this.props
+    const { territory } = this.props
     return (
       <SafeAreaView style={styles.container}>
         <FlatList
-          renderItem={this.renderItem}
+          renderItem={(item) => this.renderItem(item, { nvusc: territory.nvusc, regionLatitude: territory.latitude, regionLongitude: territory.longitude } )}
           keyExtractor={this.keyExtractor}
           ItemSeparatorComponent={this.renderSeparator}
-          data={regions}
+          data={territory.territories}
         />
       </SafeAreaView>
     )
@@ -72,14 +70,14 @@ class RegionScreen extends React.PureComponent<Props> {
 }
 
 const mapStateToProps = state => ({
-  regions: state.regions.items,
+  territory: state.regions.territory,
 })
 
 const mapDispatchToProps = {
-  onRegionsRequest,
+  onTerritoryLoad,
 }
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(RegionScreen)
+)(TerritoriesScreen)

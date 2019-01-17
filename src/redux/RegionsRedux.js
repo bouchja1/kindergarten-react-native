@@ -5,8 +5,14 @@ import { loadRegions } from "../services/api"
 export const initialState = {
   loading: false,
   items: [],
+  territory: {},
   error: null,
 }
+
+export const onTerritoryLoad = (territory) => ({
+  type: 'territory/ON_TERRITORY_LOAD',
+  territory,
+})
 
 export const onRegionsRequest = () => ({
   type: "regions/ON_REGIONS_REQ",
@@ -44,6 +50,15 @@ export const reducer = (state = initialState, action) => {
         loading: false,
         error: action.error,
       }
+    case "territory/ON_TERRITORY_LOAD": {
+      console.log("NOOO: ", action)
+      return {
+        ...state,
+        territory: action.territory,
+        loading: false,
+        error: action.error,
+      }
+    }
     default:
       return state
   }
