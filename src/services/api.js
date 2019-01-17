@@ -28,6 +28,10 @@ export const loadCoordinates = (vusc, nvusc) => {
   })
 }
 
+export const loadKindergartenDetail = (id) => {
+  return axios.get(`/kindergartens/${id}`)
+}
+
 export const loadRegions = () => {
   return axios.get('/regions')
 }

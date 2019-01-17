@@ -8,7 +8,7 @@ import { createLogger } from "redux-logger"
 import {combineEpics, createEpicMiddleware} from "redux-observable" // fce k inicializaci mdw pro odchytavani akci pro zpracovani epics
 // redux
 import { reducer as moviesReducer } from "./src/redux/MoviesRedux"
-import { reducer as mapReducer, coordinatesReqEpic } from "./src/redux/MapRedux"
+import { reducer as mapReducer, coordinatesReqEpic, kindergartenReqEpic } from "./src/redux/MapRedux"
 import { reducer as regionsReducer, regionsReqEpic } from "./src/redux/RegionsRedux"
 
 // containers
@@ -41,6 +41,7 @@ const store = createStore(
 epicMiddleware.run(combineEpics(
   coordinatesReqEpic,
   regionsReqEpic,
+  kindergartenReqEpic,
 )) // do combine epics se vkladaji ty epics
 
 export default class App extends React.PureComponent<null> {
