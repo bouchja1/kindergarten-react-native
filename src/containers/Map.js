@@ -2,8 +2,9 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { StyleSheet, View, SafeAreaView, Text } from "react-native"
-import { Marker, Callout } from "react-native-maps"
-import ClusteredMapView from "react-native-maps-super-cluster"
+import MapView, { Marker, Callout} from "react-native-maps"
+
+import { MarkerModal } from "../components"
 
 // redux
 import { onCoordinatesRequest } from "../redux/MapRedux"
@@ -56,28 +57,20 @@ class Map extends Component<Props> {
     onCoordinatesRequest(navigation.state.params.metadata, navigation.state.params.vusc)
   }
 
-  renderCluster = (cluster, onPress) => {
-    const { pointCount, coordinate, clusterId } = cluster
-    return (
-      <Marker identifier={`cluster-${clusterId}`} coordinate={coordinate} onPress={onPress}>
-        <View style={styles.clusterContainer}>
-          <Text style={styles.clusterText}>
-            {pointCount}
-          </Text>
-        </View>
-      </Marker>
-    )
+  showModal = (pin) => {
+    console.log("PIN: ", pin)
+    return <MarkerModal />
   }
 
   renderMarker = (pin) => (
-    <Marker identifier={`${pin.id}`} key={pin.id} coordinate={pin.location} onPress={() => console.log("PIN: ", pin) } />
+    <Marker identifier={`${pin.id}`} key={pin.id} coordinate={pin.location} onPress={() => this.showModal(pin) } />
   )
 
   processCoords = (originalCoords) => {
     const points = []
     for (let i = 0; i < originalCoords.length; i++)
       points.push({
-        id: `pin${originalCoords[i].id}`,
+        id: `${originalCoords[i].id}`,
         location: { latitude: originalCoords[i].latitude, longitude: originalCoords[i].longitude },
       })
     return points
@@ -90,22 +83,15 @@ class Map extends Component<Props> {
 
     return (
       <SafeAreaView style={styles.container}>
-        <ClusteredMapView
-          style={{ flex: 1 }}
-          data={processedCoords}
-          renderMarker={this.renderMarker}
-          renderCluster={this.renderCluster}
-          initialRegion={{
-            latitude: region.latitude,
-            longitude: region.longitude,
-            latitudeDelta: region.latitudeDelta,
-            longitudeDelta: region.longitudeDelta,
-          }}>
-          {/*
-            Markers rendered as children of ClusteredMapView are not taken in account by the clustering feature,
-            they will just act as they were rendered within a normal react-native-maps instance
-          */}
-        </ClusteredMapView>
+        <MapView
+          provider={MapView.PROVIDER_GOOGLE}
+          style={styles.map}
+          loadingIndicatorColor="#ffbbbb"
+          loadingBackgroundColor="#ffbbbb"
+          region={region}
+        >
+          {processedCoords.map((pin) => this.renderMarker(pin))}
+        </MapView>
       </SafeAreaView>
     )
 
@@ -113,8 +99,8 @@ class Map extends Component<Props> {
 }
 
 const mapStateToProps = (state) => ({
-  coords: state.coords.items,
-  region: state.coords.region,
+  coords: state.map.items,
+  region: state.map.region,
 })
 
 const mapDispatchToProps = {

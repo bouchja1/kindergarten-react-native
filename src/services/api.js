@@ -12,16 +12,18 @@ const axios = axiosLib.create({
 })
 
 axios.interceptors.request.use(request => {
+  const key = API_KEY;
   return {
     ...request,
-    url: `${request.url}?apiKey=${API_KEY}`,
+    url: `${request.url}?apiKey=${key}`,
   }
 })
 
-export const loadCoordinates = (regionName) => {
+export const loadCoordinates = (vusc, nvusc) => {
   return axios.get("/coordinates", {
     params: {
-      regionName,
+      vusc,
+      nvusc
     },
   })
 }

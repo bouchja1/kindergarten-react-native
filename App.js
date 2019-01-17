@@ -28,7 +28,7 @@ const store = createStore(
   combineReducers(
     {
       movies: moviesReducer,
-      coords: mapReducer,
+      map: mapReducer,
       regions: regionsReducer,
     },
   ),

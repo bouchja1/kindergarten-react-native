@@ -59,7 +59,11 @@ class TerritoriesScreen extends React.PureComponent<Props> {
     return (
       <SafeAreaView style={styles.container}>
         <FlatList
-          renderItem={(item) => this.renderItem(item, { nvusc: territory.nvusc, regionLatitude: territory.latitude, regionLongitude: territory.longitude } )}
+          renderItem={(item) => this.renderItem(item, {
+            nvusc: territory.nvusc,
+            regionLatitude: territory.latitude,
+            regionLongitude: territory.longitude
+          } )}
           keyExtractor={this.keyExtractor}
           ItemSeparatorComponent={this.renderSeparator}
           data={territory.territories}
