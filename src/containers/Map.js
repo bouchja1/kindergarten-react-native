@@ -1,13 +1,14 @@
 // @flow
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { StyleSheet, View, SafeAreaView, Text } from "react-native"
-import MapView, { Marker, Callout} from "react-native-maps"
+import { StyleSheet, View, SafeAreaView, Text, Button } from "react-native"
+import MapView, { Callout} from "react-native-maps"
 
 import { MarkerModal } from "../components"
 
 // redux
 import { onCoordinatesRequest } from "../redux/MapRedux"
+import Modal from "react-native-modal"
 
 const styles = StyleSheet.create({
   container: {
@@ -52,6 +53,10 @@ type Props = {
 class Map extends Component<Props> {
   static navigationOptions = { title: "Mapa" }
 
+  state = {
+    markerModalVisible: false,
+  }
+
   componentDidMount() {
     const {onCoordinatesRequest, navigation} = this.props;
     onCoordinatesRequest(navigation.state.params.metadata, navigation.state.params.vusc)
@@ -59,11 +64,15 @@ class Map extends Component<Props> {
 
   showModal = (pin) => {
     console.log("PIN: ", pin)
-    return <MarkerModal />
+    this.setState(() => ({ markerModalVisible: true }))
+  }
+
+  closeModal = () => {
+    this.setState(() => ({ markerModalVisible: false }))
   }
 
   renderMarker = (pin) => (
-    <Marker identifier={`${pin.id}`} key={pin.id} coordinate={pin.location} onPress={() => this.showModal(pin) } />
+    <MapView.Marker identifier={`${pin.id}`} key={pin.id} coordinate={pin.location} onPress={() => this.showModal(pin) } />
   )
 
   processCoords = (originalCoords) => {
@@ -78,6 +87,7 @@ class Map extends Component<Props> {
 
   render() {
     const { coords, region } = this.props
+    const { markerModalVisible } = this.state
 
     const processedCoords = this.processCoords(coords)
 
@@ -92,6 +102,7 @@ class Map extends Component<Props> {
         >
           {processedCoords.map((pin) => this.renderMarker(pin))}
         </MapView>
+        <MarkerModal isVisible={markerModalVisible} closeModal={() => {this.closeModal()}} />
       </SafeAreaView>
     )
 
