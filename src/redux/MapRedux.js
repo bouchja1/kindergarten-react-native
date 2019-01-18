@@ -63,7 +63,7 @@ export const reducer = (state = initialState, action) => {
         error: null,
       }
     case "kindergarten/ON_KINDERGARTEN_SUCCESS": {
-      console.log("NOOO: ", action)
+      console.log("ON_KINDERGARTEN_SUCCESS: ", action)
       return {
         ...state,
         kindergarten: action.kindergarten,

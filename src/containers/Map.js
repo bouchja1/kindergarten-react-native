@@ -70,9 +70,16 @@ class Map extends Component<Props> {
     onCoordinatesRequest(navigation.state.params.metadata, navigation.state.params.vusc)
   }
 
+  navigate = () => {
+    const { navigation, kindergarten } = this.props
+    console.log("NAVIGATING")
+    navigation.navigate("KindergartenDetail", {
+      kindergarten,
+    })
+  }
+
   showModal = (pin) => {
     const { onKindergartenDetailRequest } = this.props
-    console.log("PIN: ", pin)
     onKindergartenDetailRequest(pin.id)
     this.setState(() => ({
       markerModalVisible: true,
@@ -85,6 +92,11 @@ class Map extends Component<Props> {
     }))
   }
 
+  showMore = () => {
+    this.closeModal()
+    this.navigate()
+  }
+
   renderMarker = (pin) => (
     <MapView.Marker identifier={`${pin.id}`} key={pin.id} coordinate={pin.location}
                     onPress={() => this.showModal(pin)}/>
@@ -92,11 +104,12 @@ class Map extends Component<Props> {
 
   processCoords = (originalCoords) => {
     const points = []
-    for (let i = 0; i < originalCoords.length; i++)
+    for (let i = 0; i < originalCoords.length; i++) {
       points.push({
         id: `${originalCoords[i].id}`,
         location: { latitude: originalCoords[i].latitude, longitude: originalCoords[i].longitude },
       })
+    }
     return points
   }
 
@@ -117,9 +130,11 @@ class Map extends Component<Props> {
         >
           {processedCoords.map((pin) => this.renderMarker(pin))}
         </MapView>
-        <MarkerModal isVisible={markerModalVisible} data={kindergarten} closeModal={() => {
-          this.closeModal()
-        }}/>
+        <MarkerModal
+          isVisible={markerModalVisible}
+          data={kindergarten}
+          showMore={() => this.showMore()}
+          closeModal={() => this.closeModal()}/>
       </SafeAreaView>
     )
 

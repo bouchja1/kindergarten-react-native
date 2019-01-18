@@ -51,7 +51,7 @@ export const reducer = (state = initialState, action) => {
         error: action.error,
       }
     case "territory/ON_TERRITORY_LOAD": {
-      console.log("NOOO: ", action)
+      console.log("ON_TERRITORY_LOAD: ", action)
       return {
         ...state,
         territory: action.territory,
