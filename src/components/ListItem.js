@@ -13,12 +13,15 @@ const styles = StyleSheet.create({
 
 type Props = {|
   +onPress: () => void,
-  +children: string,
+  +children: string, 
+  +children: number,
   +testID: string,
 |}
 
 export default class ListItem extends React.PureComponent<Props> {
   render() {
+    
+    
     const { children, onPress, testID } = this.props
     return (
       <TouchableOpacity onPress={onPress} style={styles.button} testID={testID}>

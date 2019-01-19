@@ -5,6 +5,7 @@ import KindergartenDetailScreen from "./KindergartenDetailScreen"
 import Map from "./Map"
 import RootContainer from "./RootContainer"
 import Detail from "./Detail"
+import KindergartenDetailScreenGraph from "./KindergartenDetailScreenGraph";
 
 export default createAppContainer(
   createStackNavigator({
@@ -12,6 +13,7 @@ export default createAppContainer(
     TerritoriesScreen: { screen: TerritoriesScreen },
     Map: { screen: Map },
     KindergartenDetail: { screen: KindergartenDetailScreen },
+    KindergartenDetailGraph: { screen: KindergartenDetailScreenGraph },
     Root: { screen: RootContainer },
     Detail: { screen: Detail },
   }),

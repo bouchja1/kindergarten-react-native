@@ -78,6 +78,14 @@ class Map extends Component<Props> {
     })
   }
 
+  navigateGraph = () => {
+    const { navigation, kindergarten } = this.props
+    console.log("NAVIGATING")
+    navigation.navigate("KindergartenDetailGraph", {
+      kindergarten,
+    })
+  }
+
   showModal = (pin) => {
     const { onKindergartenDetailRequest } = this.props
     onKindergartenDetailRequest(pin.id)
@@ -92,9 +100,15 @@ class Map extends Component<Props> {
     }))
   }
 
+
   showMore = () => {
     this.closeModal()
     this.navigate()
+  }
+
+  showGraph = () => {
+    this.closeModal()
+    this.navigateGraph()
   }
 
   renderMarker = (pin) => (
@@ -134,6 +148,7 @@ class Map extends Component<Props> {
           isVisible={markerModalVisible}
           data={kindergarten}
           showMore={() => this.showMore()}
+          showGraph={() => this.showGraph()}
           closeModal={() => this.closeModal()}/>
       </SafeAreaView>
     )
