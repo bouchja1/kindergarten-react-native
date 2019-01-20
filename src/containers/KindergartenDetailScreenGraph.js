@@ -9,7 +9,7 @@ import * as shape from 'd3-shape'
 
 import { Colors } from "../themes"
 import { onKindergartenRadiusRequest } from "../redux/KindergartenRedux"
-import { Graph, GrButton, Table } from "../components"
+import { Graph, GrButton, DescTable } from "../components"
 
 const styles = StyleSheet.create({
   container: {

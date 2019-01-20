@@ -1,7 +1,7 @@
 // @flow
 import React  from "react"
 import { StyleSheet, Text, TouchableOpacity, SafeAreaView, View } from "react-native"
-import { Table, TableWrapper, Row, Rows, Col  } from 'react-native-table-component';
+// import { Table, TableWrapper, Row, Rows, Col  } from 'react-native-table-component';
 
 // theme
 import { Metrics } from "../themes"
@@ -20,11 +20,9 @@ type Props = {|
   +buttons: string,
 |}
 
-export default class Table extends React.PureComponent<Props> {
+export default class DescTable extends React.PureComponent<Props> {
 
-  constructor(props) {
-    super(props);
-    this.state = {
+/*
       tableHead: ['', 'Head1', 'Head2', 'Head3'],
       tableTitle: ['Title', 'Title2', 'Title3', 'Title4'],
       tableData: [
@@ -33,8 +31,7 @@ export default class Table extends React.PureComponent<Props> {
         ['1', '2', '3'],
         ['a', 'b', 'c']
       ]
-    }
-  }
+
  
   render() {
     const state = this.state;
@@ -50,4 +47,5 @@ export default class Table extends React.PureComponent<Props> {
       </View>
     )
   }
+  */
 }
