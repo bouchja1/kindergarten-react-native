@@ -22,7 +22,7 @@ export default class MarkerModal extends React.PureComponent<Props> {
 
   // Render function is called when props has changed
   render() {
-    const { isVisible, closeModal, showMore, data } = this.props
+    const { isVisible, closeModal, showMore, showGraph, data } = this.props
     return (
       <View style={styles.container}>
         <Modal
@@ -37,6 +37,9 @@ export default class MarkerModal extends React.PureComponent<Props> {
                 onPress={showMore}
                 title="Show more" />
               <Text>{JSON.stringify(data, null, 2)}</Text>
+              <Button
+                onPress={showGraph}
+                title="Show graph" />
               <Button
                 onPress={closeModal}
                 title="Close modal" />
