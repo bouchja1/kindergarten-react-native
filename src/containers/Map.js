@@ -79,7 +79,7 @@ class Map extends Component<Props> {
   }
 
   navigateGraph = () => {
-    const { navigation, kindergarten } = this.props
+    const { navigation, kindergarten} = this.props
     console.log("NAVIGATING")
     navigation.navigate("KindergartenDetailGraph", {
       kindergarten,

@@ -1,15 +1,19 @@
 // @flow
 import React from "react"
 import { SafeAreaView, StyleSheet, Text, View, 
-  TextInput, Button, ScrollView, FlatList} from "react-native"
+  TextInput, Button, ScrollView, FlatList, ListItem} from "react-native"
 import { ErrorMessage, Formik } from "formik"
 import connect from "react-redux/es/connect/connect"
 import { LineChart, YAxis, Grid } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 
+
 import { Colors } from "../themes"
-import { onKindergartenRadiusRequest } from "../redux/KindergartenRedux"
 import { Graph, GrButton, DescTable } from "../components"
+
+
+import { loadKindergartenCounts } from "../services/api"
+
 
 const styles = StyleSheet.create({
   container: {
@@ -23,7 +27,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const dataFirst  = [ 70, 85, 90, 65]
+const dataKindergarten  = [ 70, 85, 90, 65]
 
 
 let sec2014 = [ 50, 10, 40, 95]
@@ -43,30 +47,47 @@ let avg2016 = sum2016 / sec2016.length;
 let sum2017 = sec2017.reduce((previous, current) => current += previous);
 let avg2017 = sum2017 / sec2017.length;
 
-const dataSecond = [avg2014 , avg2015, avg2016, avg2017]
+const dataRadius = [avg2014 , avg2015, avg2016, avg2017]
 
 const buttons = ['1 km', '2 km', '3 km', '5km', '10km']
 
 type Props = {
-  onKindergartenRadiusRequest: typeof onKindergartenRadiusRequest,
   navigation: any,
-  kindergartensInRadius: Array<*>,
-}
+  GraphData: any,
+ }
 
 
 class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
-
   static navigationOptions = { title: "Kindergarten detail graph" }
 
+  state = {
+    GraphData: null,
+  }
+
+  componentDidMount() {
+    const { navigation } = this.props
+    loadKindergartenCounts(navigation.state.params.kindergarten.id)
+      .then(response => {
+        this.setState(
+          () => ({
+        GraphData: response.data,
+      }),
+      )
+    })
+}
+  
+
   render() {
+    const { GraphData } = this.props
+
     return(
       <SafeAreaView>
         <Text style={styles.headings}> 
           Naplněnost vybrané školky v porovnání s okolím
         </Text>
         <Graph
-          data = {dataFirst}
-          data2 = {dataSecond}
+          data = {dataKindergarten}
+          data2 = {dataRadius}
         />
         <Text style={styles.headings}> 
           Změň velikost okolí
@@ -74,6 +95,10 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
 
         <Text style={styles.headings}> 
           Detailní údaje o okolí
+        </Text>
+
+        <Text>
+          {JSON.stringify(GraphData, null, 2)}
         </Text>
 
       </SafeAreaView>
@@ -85,17 +110,20 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
           buttons = {buttons}
         />
         <Table/>
+
+        
 */
 
 const mapStateToProps = (state) => ({
   kindergartensInRadius: state.kindergarten.schools,
+  kindergarten: state.map.kindergarten,
 })
 
-const mapDispatchToProps = {
-  onKindergartenRadiusRequest,
-}
+// const mapDispatchToProps = {
+//  onKindergartenRadiusRequest,
+// }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
+ // mapDispatchToProps,
 )(KindergartenDetailScreenGraph)
