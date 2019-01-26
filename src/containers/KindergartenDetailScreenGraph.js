@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const dataKindergarten  = [ 70, 85, 90, 65]
+const dataKindergartenOne  = [ 70, 85, 90, 65]
 
 
 let sec2014 = [ 50, 10, 40, 95]
@@ -53,7 +53,7 @@ const buttons = ['1 km', '2 km', '3 km', '5km', '10km']
 
 type Props = {
   navigation: any,
-  GraphData: any,
+  graphData: any,
  }
 
 
@@ -61,52 +61,60 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
   static navigationOptions = { title: "Kindergarten detail graph" }
 
   state = {
-    GraphData: null,
+    graphData: null,
   }
 
   componentDidMount() {
     const { navigation } = this.props
     loadKindergartenCounts(navigation.state.params.kindergarten.id)
       .then(response => {
-        this.setState(
-          () => ({
-        GraphData: response.data,
+        this.setState(() => ({
+        graphData: response.data.data.dataKindergarten,
       }),
       )
     })
 }
-  
+
 
   render() {
-    const { GraphData } = this.props
-
+    const { graphData } = this.state
     return(
       <SafeAreaView>
         <Text style={styles.headings}> 
           Naplněnost vybrané školky v porovnání s okolím
         </Text>
         <Graph
-          data = {dataKindergarten}
+          data = {dataKindergartenOne}
           data2 = {dataRadius}
         />
+
         <Text style={styles.headings}> 
           Změň velikost okolí
         </Text>
 
         <Text style={styles.headings}> 
-          Detailní údaje o okolí
-        </Text>
+          {console.log("graphData: ", graphData)}
+        </Text> 
 
-        <Text>
-          {JSON.stringify(GraphData, null, 2)}
-        </Text>
+        <GrButton
+         buttons = {buttons}
+        />
+
 
       </SafeAreaView>
     )
   }
 }
 /*
-        <GrButton
+        {data.dataKindergarten.count.map((value)=>{
+             return <View key={value.year}><Text>{value.avg_count}</Text></View>
+        })}
+
+        <Text>
+          {graphData.red_nazev}
+        </Text>
+
+<GrButton
           buttons = {buttons}
         />
         <Table/>
@@ -117,7 +125,7 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
 const mapStateToProps = (state) => ({
   kindergartensInRadius: state.kindergarten.schools,
   kindergarten: state.map.kindergarten,
-})
+ })
 
 // const mapDispatchToProps = {
 //  onKindergartenRadiusRequest,

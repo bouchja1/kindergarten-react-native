@@ -24,22 +24,29 @@ type Props = {|
 |}
 
 export default class GrButton extends React.PureComponent<Props> {
-  state = {
-    index: 1
+
+  constructor () {
+    super()
+    this.state = {
+      selectedIndex: 2
+    }
+    this.updateIndex = this.updateIndex.bind(this)
   }
   
-  updateIndex = (index) => {
-    this.setState({index})
+  updateIndex (selectedIndex) {
+    this.setState({selectedIndex})
   }
+  
   
   render() {
+    const { selectedIndex } = this.state
     const { buttons } = this.props
 
     return (
       <View style={styles.container}>
         <ButtonGroup
         onPress={this.updateIndex}
-        selectedIndex={this.state.index}
+        selectedIndex={selectedIndex}
         buttons={buttons}
         containerStyle={{height: 100}}
         />
