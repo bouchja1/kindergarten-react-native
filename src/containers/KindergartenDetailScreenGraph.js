@@ -69,7 +69,7 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
     loadKindergartenCounts(navigation.state.params.kindergarten.id)
       .then(response => {
         this.setState(() => ({
-        graphData: response.data.data.dataKindergarten,
+        graphData: response.data.data.dataKindergarten.counts,
       }),
       )
     })
@@ -96,9 +96,9 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
           {console.log("graphData: ", graphData)}
         </Text> 
 
-        <GrButton
-         buttons = {buttons}
-        />
+        {graphData.counts.map((value)=>{
+             return <View key={value.year}><Text>{value.avg_count}</Text></View>
+        })}
 
 
       </SafeAreaView>
@@ -109,6 +109,10 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
         {data.dataKindergarten.count.map((value)=>{
              return <View key={value.year}><Text>{value.avg_count}</Text></View>
         })}
+
+                <GrButton
+         buttons = {buttons}
+        />
 
         <Text>
           {graphData.red_nazev}
