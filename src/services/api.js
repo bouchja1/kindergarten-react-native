@@ -38,3 +38,5 @@ export const loadKindergartenRadius = (latitude, longitude, kindergartenId, radi
 })
 
 export const loadRegions = () => axios.get("/regions")
+
+export const loadKindergartenCounts = (id) => axios.get(`/kindergartens/${id}/counts`)

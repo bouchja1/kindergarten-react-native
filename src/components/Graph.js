@@ -17,6 +17,8 @@ const styles = StyleSheet.create({
 })
 
 type Props = {|
+  data: any,
+  data2: any,
 |}
 
 export default class Graph extends React.PureComponent<Props> {
