@@ -4,7 +4,6 @@ import { SafeAreaView, StyleSheet, Text, View,
   TextInput, Button, ScrollView, FlatList, ListItem} from "react-native"
 import { ErrorMessage, Formik } from "formik"
 import connect from "react-redux/es/connect/connect"
-import { LineChart, YAxis, Grid } from 'react-native-svg-charts'
 import * as shape from 'd3-shape'
 
 
@@ -27,27 +26,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const dataKindergartenOne  = [ 70, 85, 90, 65]
 
-
-let sec2014 = [ 50, 10, 40, 95]
-let sec2015 = [ 60, 70, 30, 90]
-let sec2016 = [ 90, 90, 90, 90]
-let sec2017 = [ 80, 100, 90, 95]
-
-let sum2014 = sec2014.reduce((previous, current) => current += previous);
-let avg2014 = sum2014 / sec2014.length;
-
-let sum2015 = sec2015.reduce((previous, current) => current += previous);
-let avg2015 = sum2015 / sec2015.length;
-
-let sum2016 = sec2016.reduce((previous, current) => current += previous);
-let avg2016 = sum2016 / sec2016.length;
-
-let sum2017 = sec2017.reduce((previous, current) => current += previous);
-let avg2017 = sum2017 / sec2017.length;
-
-const dataRadius = [avg2014 , avg2015, avg2016, avg2017]
 
 const buttons = ['1 km', '2 km', '3 km', '5km', '10km']
 
@@ -69,7 +48,7 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
     loadKindergartenCounts(navigation.state.params.kindergarten.id)
       .then(response => {
         this.setState(() => ({
-        graphData: response.data.data.dataKindergarten.counts,
+        graphData: response.data.data,
       }),
       )
     })
@@ -77,12 +56,48 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
 
 
   render() {
-    const { graphData } = this.state
-    return(
+    const { graphData} = this.state
+    if(!graphData){return <Text> Načítám pičo </Text>} 
+    
+    const dataKindergartenOne = []
+
+    let sec2014 = [70, 70, 70, 70]
+    let sec2015 = [70, 90, 70, 70]
+    let sec2016 = [70, 70, 100, 70]
+    let sec2017 = [7, 70, 100, 70]
+
+    let sum2014 = sec2014.reduce((previous, current) => current += previous);
+    let avg2014 = sum2014 / sec2014.length;
+
+    let sum2015 = sec2015.reduce((previous, current) => current += previous);
+    let avg2015 = sum2015 / sec2015.length;
+
+    let sum2016 = sec2016.reduce((previous, current) => current += previous);
+    let avg2016 = sum2016 / sec2016.length;
+
+    let sum2017 = sec2017.reduce((previous, current) => current += previous);
+    let avg2017 = sum2017 / sec2017.length;
+
+    const dataRadius = [avg2014 , avg2015, avg2016, avg2017]
+
+    return (       
       <SafeAreaView>
+        {graphData.dataKindergarten.counts.map((value)=>{
+          dataKindergartenOne.push(parseFloat(value.avg_count))
+          })}
         <Text style={styles.headings}> 
           Naplněnost vybrané školky v porovnání s okolím
         </Text>
+
+        {graphData.dataRadius.map((value)=>{
+          value.counts.map((hodnota)=>{
+                if (hodnota.year == 2017) {
+                sec2017.push(parseFloat(hodnota.counts.avg_count))
+                }
+              }
+        )}}
+
+
         <Graph
           data = {dataKindergartenOne}
           data2 = {dataRadius}
@@ -96,33 +111,39 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
           {console.log("graphData: ", graphData)}
         </Text> 
 
-        {graphData.counts.map((value)=>{
-             return <View key={value.year}><Text>{value.avg_count}</Text></View>
+        {graphData.dataKindergarten.counts.map((value)=>{
+             return  <SafeAreaView 
+              key={value.year}>
+              <Text>
+                {parseFloat(value.avg_count)}
+              </Text>
+            </SafeAreaView>
+        })}
+
+        <Text style={styles.headings}> 
+          Seznam školek ve zvoleném okolí
+        </Text>
+        {graphData.dataRadius.map((value)=>{
+             return <SafeAreaView key={value.red_izo}><Text>{value.red_nazev}</Text></SafeAreaView>
         })}
 
 
       </SafeAreaView>
-    )
+        ) 
   }
 }
 /*
-        {data.dataKindergarten.count.map((value)=>{
-             return <View key={value.year}><Text>{value.avg_count}</Text></View>
-        })}
+
+
 
                 <GrButton
          buttons = {buttons}
         />
 
-        <Text>
-          {graphData.red_nazev}
-        </Text>
-
 <GrButton
           buttons = {buttons}
         />
         <Table/>
-
         
 */
 

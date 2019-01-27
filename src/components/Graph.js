@@ -29,6 +29,7 @@ export default class Graph extends React.PureComponent<Props> {
       const axesSvg = { fontSize: 10, fill: 'grey' };
       const xAxisHeight = 30
       const xAxis = [2014, 2015, 2016, 2017]
+    
 
       return (
         <SafeAreaView>
@@ -51,6 +52,8 @@ export default class Graph extends React.PureComponent<Props> {
                   data={ data }
                   svg={{ stroke: 'rgba(134, 65, 244, 0.5)' }}
                   contentInset={ verticalContentInset }
+                  gridMin = {Math.min(...maxData)}
+                  gridMax = {Math.max(...maxData)} 
               >
                   <Grid/>
               </LineChart>
@@ -69,6 +72,8 @@ export default class Graph extends React.PureComponent<Props> {
                 data={ data2 }
                 svg={{ stroke: 'rgba(34, 128, 176, 0.5)' }}
                 contentInset={ verticalContentInset }
+                gridMin = {Math.min(...maxData)}
+                gridMax = {Math.max(...maxData)} 
               />
             </SafeAreaView>
           </SafeAreaView>
