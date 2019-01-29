@@ -21,14 +21,21 @@ const styles = StyleSheet.create({
   },  
   headings: {
     paddingTop: 20,
+    paddingBottom: 10,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  ListKindergartens: {
+    textAlign: 'center',
+  },
+  text: {
+    paddingTop: 10,
   }
 })
 
 
 
-const buttons = ['1 km', '2 km', '3 km', '5km', '10km']
+
 
 type Props = {
   navigation: any,
@@ -54,6 +61,11 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
     })
 }
 
+_keyExtractor = item => `item-${item.red_izo}`
+
+_renderItem = ({ item }) => (
+  <Text style={styles.ListKindergartens}>{item.red_nazev}</Text>)
+
 
   render() {
     const { graphData} = this.state
@@ -61,10 +73,10 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
     
     const dataKindergartenOne = []
 
-    let sec2014 = [70, 70, 70, 70]
-    let sec2015 = [70, 90, 70, 70]
-    let sec2016 = [70, 70, 100, 70]
-    let sec2017 = [7, 70, 100, 70]
+    let sec2014 = [70, 80, 90, 70]
+    let sec2015 = [7, 80, 90, 70]
+    let sec2016 = [70, 8, 90, 70]
+    let sec2017 = [70, 80, 9, 70]
 
     let sum2014 = sec2014.reduce((previous, current) => current += previous);
     let avg2014 = sum2014 / sec2014.length;
@@ -85,18 +97,10 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
         {graphData.dataKindergarten.counts.map((value)=>{
           dataKindergartenOne.push(parseFloat(value.avg_count))
           })}
+
         <Text style={styles.headings}> 
           Naplněnost vybrané školky v porovnání s okolím
         </Text>
-
-        {graphData.dataRadius.map((value)=>{
-          value.counts.map((hodnota)=>{
-                if (hodnota.year == 2017) {
-                sec2017.push(parseFloat(hodnota.counts.avg_count))
-                }
-              }
-        )}}
-
 
         <Graph
           data = {dataKindergartenOne}
@@ -106,45 +110,60 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
         <Text style={styles.headings}> 
           Změň velikost okolí
         </Text>
+            
+        <GrButton/>
+
 
         <Text style={styles.headings}> 
-          {console.log("graphData: ", graphData)}
-        </Text> 
-
-        {graphData.dataKindergarten.counts.map((value)=>{
-             return  <SafeAreaView 
-              key={value.year}>
-              <Text>
-                {parseFloat(value.avg_count)}
-              </Text>
-            </SafeAreaView>
-        })}
+          Detaily
+        </Text>
+        
+        <DescTable/>
 
         <Text style={styles.headings}> 
           Seznam školek ve zvoleném okolí
         </Text>
-        {graphData.dataRadius.map((value)=>{
-             return <SafeAreaView key={value.red_izo}><Text>{value.red_nazev}</Text></SafeAreaView>
-        })}
 
+        <FlatList
+          data={graphData.dataRadius}
+          renderItem={this._renderItem}
+          keyExtractor={this._keyExtractor}
+        />
 
       </SafeAreaView>
         ) 
   }
 }
 /*
+,
+          graphData.dataRadius.map((value)=>{
+          value.counts.map((hodnota)=>{
+                if (hodnota.year === 2017) {
+                sec2017.push(parseFloat(hodnota.avg_count))
+                }
+                else if (hodnota.year === 2016) {
+                sec2016.push(parseFloat(hodnota.avg_count))
+                }
+                else if (hodnota.year === 2016) {
+                sec2015.push(parseFloat(hodnota.avg_count))
+                }
+                else {
+                sec2014.push(parseFloat(hodnota.avg_count))  
+                }
+              }
+        )}]
 
 
+              
 
-                <GrButton
-         buttons = {buttons}
-        />
-
-<GrButton
-          buttons = {buttons}
-        />
-        <Table/>
-        
+        {graphData.dataKindergarten.counts.map((value)=>{
+             return  <SafeAreaView 
+              key={value.year}>
+              <Text style={styles.text}>
+                {parseFloat(value.avg_count)}
+              </Text>
+            </SafeAreaView>
+        })}
 */
 
 const mapStateToProps = (state) => ({
