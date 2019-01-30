@@ -50,7 +50,7 @@ export default class Graph extends React.PureComponent<Props> {
               <LineChart
                   style={ { flex: 1 } }
                   data={ data }
-                  svg={{ stroke: 'rgba(134, 65, 244, 0.5)' }}
+                  svg={{ stroke: 'tomato' }}
                   contentInset={ verticalContentInset }
                   gridMin = {Math.min(...maxData)}
                   gridMax = {Math.max(...maxData)} 
@@ -70,7 +70,7 @@ export default class Graph extends React.PureComponent<Props> {
                   backgroundColor: 'transparent',
                   marginBottom: xAxisHeight, } }
                 data={ data2 }
-                svg={{ stroke: 'rgba(34, 128, 176, 0.5)' }}
+                svg={{ stroke: '#7BDCB5' }}
                 contentInset={ verticalContentInset }
                 gridMin = {Math.min(...maxData)}
                 gridMax = {Math.max(...maxData)} 
@@ -79,13 +79,13 @@ export default class Graph extends React.PureComponent<Props> {
           </SafeAreaView>
           <Text style={ {
               textAlign: 'center',
-              color: 'rgba(134, 65, 244, 0.5)',
+              color: 'tomato',
               fontSize: 12,
             }}> 
             Vybraná školka 
             <Text>{"     "}</Text>
             <Text style={{
-              color: 'rgba(34, 128, 176, 0.5)',
+              color: '#7BDCB5',
             }}>
             Okolí 
             </Text>
