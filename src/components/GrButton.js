@@ -1,6 +1,7 @@
 // @flow
 import React  from "react"
-import { StyleSheet, Text, TouchableOpacity, ButtonGroup, View } from "react-native"
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { ButtonGroup} from "react-native-elements"
 
 // theme
 import { Metrics } from "../themes"
@@ -20,35 +21,35 @@ const styles = StyleSheet.create({
 
 type Props = {|
   +onPress: () => void,
-  +buttons: string,
 |}
 
 export default class GrButton extends React.PureComponent<Props> {
 
-  constructor () {
-    super()
+  constructor (props) {
+    super(props)
     this.state = {
       selectedIndex: 2
     }
     this.updateIndex = this.updateIndex.bind(this)
   }
   
-  updateIndex (selectedIndex) {
-    this.setState({selectedIndex})
+  updateIndex = (newSelectedIndex) => {
+    this.setState(
+      {selectedIndex: newSelectedIndex
+      })
   }
   
   
   render() {
     const { selectedIndex } = this.state
-    const { buttons } = this.props
-
+    const buttonRadius = ['1 km', '2 km', '3 km', '5km', '10km']
     return (
       <View style={styles.container}>
         <ButtonGroup
         onPress={this.updateIndex}
         selectedIndex={selectedIndex}
-        buttons={buttons}
-        containerStyle={{height: 100}}
+        buttons={buttonRadius}
+        containerStyle={{height: 30}}
         />
       </View>
     )
