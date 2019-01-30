@@ -2,7 +2,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { StyleSheet, SafeAreaView } from "react-native"
-import MapView, { Callout } from "react-native-maps"
+import MapView from "react-native-maps"
 
 import { MarkerModal } from "../components"
 
@@ -72,7 +72,6 @@ class Map extends Component<Props> {
 
   navigate = () => {
     const { navigation, kindergarten } = this.props
-    console.log("NAVIGATING")
     navigation.navigate("KindergartenDetail", {
       kindergarten,
     })
@@ -80,7 +79,6 @@ class Map extends Component<Props> {
 
   navigateGraph = () => {
     const { navigation, kindergarten} = this.props
-    console.log("NAVIGATING")
     navigation.navigate("KindergartenDetailGraph", {
       kindergarten,
     })

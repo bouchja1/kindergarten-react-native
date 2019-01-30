@@ -37,7 +37,6 @@ export const reducer = (state = initialState, action) => {
         error: null,
       }
     case "regions/ON_REGIONS_SUCCESS": {
-      console.log("ACTION: ", action.regions)
       return {
         ...state,
         items: action.regions.regions,
@@ -51,7 +50,6 @@ export const reducer = (state = initialState, action) => {
         error: action.error,
       }
     case "territory/ON_TERRITORY_LOAD": {
-      console.log("ON_TERRITORY_LOAD: ", action)
       return {
         ...state,
         territory: action.territory,

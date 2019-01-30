@@ -21,31 +21,19 @@ const styles = StyleSheet.create({
 type Props = {|
   +onPress: () => void,
   showDifferentRadius: any,
+  selectedIndex: number,
 |}
 
 const buttonRadius = ["1 km", "2 km", "3 km", "5 km", "10 km"]
 
 export default class GrButton extends React.PureComponent<Props> {
 
-  state = {
-    selectedIndex: 2,
-  }
-
   updateIndex = (newSelectedIndex, showDifferentRadius) => {
-    console.log("AAA: ", newSelectedIndex)
-    this.setState(() => ({
-      selectedIndex: newSelectedIndex,
-    }), () => {
-      console.log("SKONCIL JSEM")
-    })
-    showDifferentRadius(buttonRadius[newSelectedIndex])
-    console.log("KJKKJKJKJKJKJ: ", this.state.selectedIndex)
+    showDifferentRadius(buttonRadius[newSelectedIndex], newSelectedIndex)
   }
 
   render() {
-    const { selectedIndex } = this.state
-    console.log("rendering new selected index: ", selectedIndex)
-    const { showDifferentRadius } = this.props
+    const { showDifferentRadius, selectedIndex } = this.props
     return (
       <View style={styles.container}>
         <ButtonGroup

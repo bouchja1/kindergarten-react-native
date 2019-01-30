@@ -1,20 +1,14 @@
 // @flow
 import React from "react"
 import {
-  SafeAreaView, StyleSheet, Text, View, ActivityIndicator,
-  TextInput, Button, ScrollView, FlatList, ListItem,
+  StyleSheet, Text, View, ActivityIndicator,
+  ScrollView, FlatList,
 } from "react-native"
-import { ErrorMessage, Formik } from "formik"
 import connect from "react-redux/es/connect/connect"
-import * as shape from "d3-shape"
-
 
 import { Colors } from "../themes"
 import { Graph, GrButton, DescTable } from "../components"
-
-
-import { loadKindergartenCounts } from "../services/api"
-
+import { onKindergartenCountsRequest } from "../redux/GraphRedux"
 
 const styles = StyleSheet.create({
   container: {
@@ -56,35 +50,23 @@ const styles = StyleSheet.create({
 type Props = {
   navigation: any,
   graphData: any,
+  loading: boolean,
+  onKindergartenCountsRequest: typeof onKindergartenCountsRequest,
+  selectedIndex: number,
 }
 
 
 class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
   static navigationOptions = { title: "Porovnání s okolím" }
 
-  state = {
-    graphData: null,
-    loading: true,
-  }
-
   componentDidMount() {
-    console.log("componentDidMount: ", this.state.loading)
-    const { navigation } = this.props
-    loadKindergartenCounts(navigation.state.params.kindergarten.id)
-      .then(response => {
-        console.log("loadKindergartenCounts then: ")
-        this.setState(() => ({
-            graphData: response.data.data,
-            loading: false,
-          }),
-        )
-        console.log("I am not sure if state was set")
-      })
+    const { onKindergartenCountsRequest, navigation } = this.props
+    onKindergartenCountsRequest(navigation.state.params.kindergarten.id)
   }
 
-  _keyExtractor = item => `item-${item.red_izo}`
+  keyExtractor = item => `item-${item.red_izo}`
 
-  _renderItem = ({ item }) => {
+  renderItem = ({ item }) => {
     const school2017Data = item.counts[0]
     if (parseFloat(school2017Data.avg_count) > 0) {
       return <Text style={styles.ListKindergartens}>{item.red_pln}: {"  "}
@@ -96,22 +78,10 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
     return null
   }
 
-  showDifferentRadius = (radiusKm) => {
-    this.setState(() => ({
-        graphData: null,
-        loading: true,
-      }),
-    )
-    const { navigation } = this.props
+  showDifferentRadius = (radiusKm, newSelectedIndex) => {
+    const { onKindergartenCountsRequest, navigation } = this.props
     const radiusKmArray = radiusKm.split(" ")
-    loadKindergartenCounts(navigation.state.params.kindergarten.id, Number(radiusKmArray[0]))
-      .then(response => {
-        this.setState(() => ({
-            graphData: response.data.data,
-            loading: false,
-          }),
-        )
-      })
+    onKindergartenCountsRequest(navigation.state.params.kindergarten.id, Number(radiusKmArray[0]), newSelectedIndex)
   }
 
   showSchoolsInRadius = (dataRadius) => {
@@ -121,16 +91,14 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
     }
     return <FlatList
       data={dataRadius}
-      renderItem={this._renderItem}
-      keyExtractor={this._keyExtractor}
+      renderItem={this.renderItem}
+      keyExtractor={this.keyExtractor}
     />
   }
 
   render() {
-    const { graphData, loading } = this.state
-    console.log("graphData v render: ", graphData)
-    console.log("loading v render: ", loading)
-    if (!graphData && loading) {
+    const { graphData, loading, selectedIndex } = this.props;
+    if (!graphData || loading) {
       return (
         <View style={[styles.container1, styles.horizontal]}>
           <ActivityIndicator size="large" color="tomato"/>
@@ -223,6 +191,7 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
 
         <GrButton
           showDifferentRadius={this.showDifferentRadius}
+          selectedIndex={selectedIndex}
         />
 
 
@@ -248,16 +217,21 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
   }
 }
 
-const mapStateToProps = (state) => ({
-  kindergartensInRadius: state.kindergarten.schools,
-  kindergarten: state.map.kindergarten,
-})
+const mapStateToProps = (state) => {
+  return {
+    kindergartensInRadius: state.kindergarten.schools,
+    kindergarten: state.map.kindergarten,
+    graphData: state.graph.counts,
+    loading: state.graph.loading,
+    selectedIndex: state.graph.selectedIndex,
+  }
+}
 
-// const mapDispatchToProps = {
-//  onKindergartenRadiusRequest,
-// }
+const mapDispatchToProps = {
+  onKindergartenCountsRequest,
+}
 
 export default connect(
   mapStateToProps,
-  // mapDispatchToProps,
+  mapDispatchToProps,
 )(KindergartenDetailScreenGraph)

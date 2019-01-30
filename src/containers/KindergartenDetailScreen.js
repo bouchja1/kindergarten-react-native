@@ -1,6 +1,6 @@
 // @flow
 import React from "react"
-import { SafeAreaView, StyleSheet, Text, View, TextInput, Button, ScrollView, FlatList } from "react-native"
+import { SafeAreaView, StyleSheet, Text, View, TextInput, Button, FlatList } from "react-native"
 import { ErrorMessage, Formik } from "formik"
 import connect from "react-redux/es/connect/connect"
 
@@ -26,14 +26,12 @@ class KindergartenDetailScreen extends React.PureComponent<Props> {
 
   handleSubmitForm = (values, actions) => {
     const { onKindergartenRadiusRequest, navigation } = this.props
-    console.log("VALUES: ", JSON.stringify(values, null, 2))
     // actions.setSubmitting(false);
     let kindergartenReqObj = navigation.state.params.kindergarten
     kindergartenReqObj = {
       ...kindergartenReqObj,
       radius: Number(values.radius),
     }
-    console.log("KIINDER: ", kindergartenReqObj)
     onKindergartenRadiusRequest(kindergartenReqObj)
   }
 
@@ -68,7 +66,6 @@ class KindergartenDetailScreen extends React.PureComponent<Props> {
         </Formik>
         <FlatList
           renderItem={({ item }) => {
-            console.log("ITEM: ", item)
             return <ListItem>{item.red_nazev}, {item.red_misto}</ListItem>
           }}
           data={kindergartensInRadius}

@@ -39,7 +39,6 @@ export const reducer = (state = initialState, action) => {
         error: null,
       }
     case "kindergarten/ON_KINDERGARTEN_RADIUS_SUCCESS": {
-      console.log("ON_KINDERGARTEN_RADIUS_SUCCESS: ", action)
       return {
         ...state,
         schools: action.kindergartens.schools,
