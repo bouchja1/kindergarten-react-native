@@ -1,7 +1,7 @@
 // @flow
-import React  from "react"
+import React from "react"
 import { StyleSheet, View } from "react-native"
-import { ButtonGroup} from "react-native-elements"
+import { ButtonGroup } from "react-native-elements"
 
 // theme
 import { Metrics } from "../themes"
@@ -10,12 +10,12 @@ const styles = StyleSheet.create({
   button: {
     padding: Metrics.padding.section,
   },
-      container: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      paddingTop: 15,
-    },
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 15,
+  },
 })
 
 type Props = {|
@@ -23,35 +23,34 @@ type Props = {|
   showDifferentRadius: any,
 |}
 
+const buttonRadius = ["1 km", "2 km", "3 km", "5 km", "10 km"]
+
 export default class GrButton extends React.PureComponent<Props> {
 
-  constructor (props) {
-    super(props)
-    this.state = {
-      selectedIndex: 2
-    }
-    this.buttonRadius = ['1 km', '2 km', '3 km', '5 km', '10 km']
-    this.updateIndex = this.updateIndex.bind(this)
+  state = {
+    selectedIndex: 2,
   }
-  
+
   updateIndex = (newSelectedIndex, showDifferentRadius) => {
-    showDifferentRadius(this.buttonRadius[newSelectedIndex])
-    this.setState(
-      {
-        selectedIndex: newSelectedIndex
-      })
+    console.log("AAA: ", newSelectedIndex)
+    this.setState(() => ({
+      selectedIndex: newSelectedIndex,
+    }))
+    showDifferentRadius(buttonRadius[newSelectedIndex])
+    console.log("KJKKJKJKJKJKJ")
   }
-  
+
   render() {
     const { selectedIndex } = this.state
-    const { showDifferentRadius } = this.props;
+    console.log("rendering new selected index: ", selectedIndex)
+    const { showDifferentRadius } = this.props
     return (
       <View style={styles.container}>
         <ButtonGroup
-        onPress={(event) => this.updateIndex(event, showDifferentRadius)}
-        selectedIndex={selectedIndex}
-        buttons={this.buttonRadius}
-        containerStyle={{height: 30}}
+          onPress={(index) => this.updateIndex(index, showDifferentRadius)}
+          selectedIndex={selectedIndex}
+          buttons={buttonRadius}
+          containerStyle={{ height: 30 }}
         />
       </View>
     )

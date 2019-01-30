@@ -138,8 +138,6 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
       )
     }
 
-    console.log("REEENDER")
-
     const dataKindergartenOne = []
 
     const sec2014 = []
