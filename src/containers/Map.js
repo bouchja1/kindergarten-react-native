@@ -112,7 +112,7 @@ class Map extends Component<Props> {
   }
 
   renderMarker = (pin) => (
-    <MapView.Marker identifier={`${pin.id}`} key={pin.id} coordinate={pin.location}
+    <MapView.Marker identifier={`${pin.id}`} key={pin.id} coordinate={pin.location} pinColor='tomato'
                     onPress={() => this.showModal(pin)}/>
   )
 
@@ -147,7 +147,6 @@ class Map extends Component<Props> {
         <MarkerModal
           isVisible={markerModalVisible}
           data={kindergarten}
-          showMore={() => this.showMore()}
           showGraph={() => this.showGraph()}
           closeModal={() => this.closeModal()}/>
       </SafeAreaView>
