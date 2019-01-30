@@ -58,6 +58,8 @@ export default class MarkerModal extends React.PureComponent<Props> {
             <View style={styles.innerContainer}>
               <View style={styles.text}>
                 <Text style={styles.textName}>{data.red_pln}</Text>
+                <Text style={styles.textHeading}>Naplněnost v r. 2017:</Text>
+                <Text style={{color: "tomato"}}>{data.children_total_attendance}/{data.children_total_capacity} ({data.children_total_attendance/data.children_total_capacity * 100} %)</Text>
                 <Text style={styles.textHeading}>Adresa:</Text>
                 <Text>{data.red_nazev}</Text>
                 <Text>{data.red_ulice}</Text>
