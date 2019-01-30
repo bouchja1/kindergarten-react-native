@@ -1,6 +1,6 @@
 // @flow
 import React  from "react"
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { ButtonGroup} from "react-native-elements"
 
 // theme
@@ -37,10 +37,10 @@ export default class GrButton extends React.PureComponent<Props> {
   updateIndex = (newSelectedIndex, showDifferentRadius) => {
     showDifferentRadius(this.buttonRadius[newSelectedIndex])
     this.setState(
-      {selectedIndex: newSelectedIndex
+      {
+        selectedIndex: newSelectedIndex
       })
   }
-  
   
   render() {
     const { selectedIndex } = this.state

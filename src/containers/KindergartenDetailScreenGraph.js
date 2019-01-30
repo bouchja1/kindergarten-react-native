@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
   },
   superHead: {
     paddingTop: 20,
-    color: 'tomato',
-    fontWeight: 'bold',
+    color: "tomato",
+    fontWeight: "bold",
     fontSize: 20,
     textAlign: "center",
   },
@@ -43,13 +43,13 @@ const styles = StyleSheet.create({
   },
   container1: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: "center",
   },
   horizontal: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10
-  }
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
+  },
 })
 
 
@@ -64,16 +64,21 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
 
   state = {
     graphData: null,
+    loading: true,
   }
 
   componentDidMount() {
+    console.log("componentDidMount: ", this.state.loading)
     const { navigation } = this.props
     loadKindergartenCounts(navigation.state.params.kindergarten.id)
       .then(response => {
+        console.log("loadKindergartenCounts then: ")
         this.setState(() => ({
             graphData: response.data.data,
+            loading: false,
           }),
         )
+        console.log("I am not sure if state was set")
       })
   }
 
@@ -82,23 +87,28 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
   _renderItem = ({ item }) => {
     const school2017Data = item.counts[0]
     if (parseFloat(school2017Data.avg_count) > 0) {
-      return <Text style={styles.ListKindergartens}>{item.red_pln}: {'  '} 
-        <Text style={{color: '#7BDCB5'}}>
+      return <Text style={styles.ListKindergartens}>{item.red_pln}: {"  "}
+        <Text style={{ color: "#7BDCB5" }}>
           {parseFloat(school2017Data.avg_count)}
         </Text>
       </Text>
     }
-    return null;
+    return null
   }
 
   showDifferentRadius = (radiusKm) => {
+    this.setState(() => ({
+        graphData: null,
+        loading: true,
+      }),
+    )
     const { navigation } = this.props
-    const radiusKmArray = radiusKm.split(' ');
-    console.log("ZAVOLAL JSEM HO: ", radiusKmArray[0])
+    const radiusKmArray = radiusKm.split(" ")
     loadKindergartenCounts(navigation.state.params.kindergarten.id, Number(radiusKmArray[0]))
       .then(response => {
         this.setState(() => ({
             graphData: response.data.data,
+            loading: false,
           }),
         )
       })
@@ -106,25 +116,29 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
 
   showSchoolsInRadius = (dataRadius) => {
     if (dataRadius.length === 0) {
-      return <Text style={{textAlign: "center", color: '#7BDCB5'}}> 
-      Ve zvoleném okolí není žádná školka </Text>
+      return <Text style={{ textAlign: "center", color: "#7BDCB5" }}>
+        Ve zvoleném okolí není žádná školka </Text>
     }
-      return <FlatList
+    return <FlatList
       data={dataRadius}
       renderItem={this._renderItem}
       keyExtractor={this._keyExtractor}
     />
-    }
+  }
 
   render() {
-    const { graphData } = this.state
-    if (!graphData) {
+    const { graphData, loading } = this.state
+    console.log("graphData v render: ", graphData)
+    console.log("loading v render: ", loading)
+    if (!graphData && loading) {
       return (
         <View style={[styles.container1, styles.horizontal]}>
-        <ActivityIndicator size="large" color="tomato" />
-      </View>
+          <ActivityIndicator size="large" color="tomato"/>
+        </View>
       )
     }
+
+    console.log("REEENDER")
 
     const dataKindergartenOne = []
 
@@ -138,16 +152,13 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
       dataKindergartenOne.push(parseFloat(kindergartenCounts[i].avg_count))
     }
 
-    console.log("ORIGINAL: ", dataKindergartenOne)
-
-    let radiusMax = 0;
-    let radiusMin = 0;
+    let radiusMax = 0
+    let radiusMin = 0
 
     for (let i = 0; i < graphData.dataRadius.length; i++) {
       const schoolInRadius = graphData.dataRadius[i]
-      console.log("RADIUS: ", schoolInRadius)
       for (let j = 0; j < schoolInRadius.counts.length; j++) {
-        const schoolInRadiusCounts = schoolInRadius.counts[j];
+        const schoolInRadiusCounts = schoolInRadius.counts[j]
         if (schoolInRadiusCounts.year === 2017 && parseFloat(schoolInRadiusCounts.avg_count) > 0) {
 
           sec2017.push(parseFloat(schoolInRadiusCounts.avg_count))
@@ -164,10 +175,10 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
       }
     }
 
-    let avg2014 = 0;
-    let avg2015 = 0;
-    let avg2016 = 0;
-    let avg2017 = 0;
+    let avg2014 = 0
+    let avg2015 = 0
+    let avg2016 = 0
+    let avg2017 = 0
 
     if (sec2014.length) {
       const sum2014 = sec2014.reduce((previous, current) => current += previous)
@@ -192,8 +203,8 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
     const dataRadius = [avg2014, avg2015, avg2016, avg2017]
 
     // max value from array and min value from array
-    radiusMax = (sec2017.length) ? Math.max(...sec2017) : 0;
-    radiusMin = (sec2017.length) ? Math.min(...sec2017) : 0;
+    radiusMax = (sec2017.length) ? Math.max(...sec2017) : 0
+    radiusMin = (sec2017.length) ? Math.min(...sec2017) : 0
 
     return (
       <ScrollView>
@@ -230,10 +241,10 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
         <Text style={styles.headings}>
           Naplněnost jednotlivých školek {"\n"}ve zvoleném okolí
         </Text>
-        
-      {this.showSchoolsInRadius(graphData.dataRadius)}
 
-      
+        {this.showSchoolsInRadius(graphData.dataRadius)}
+
+
       </ScrollView>
     )
   }

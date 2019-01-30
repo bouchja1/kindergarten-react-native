@@ -59,7 +59,7 @@ type Props = {
 }
 
 class Map extends Component<Props> {
-  static navigationOptions = { title: "Mapa" }
+  static navigationOptions = { title: "Mapa školek v okresu" }
 
   state = {
     markerModalVisible: false,
