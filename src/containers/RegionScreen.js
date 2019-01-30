@@ -30,7 +30,7 @@ type Props = {
 }
 
 class RegionScreen extends React.PureComponent<Props> {
-  static navigationOptions = { title: "Select region" }
+  static navigationOptions = { title: 'Zvolte kraj' }
 
   componentDidMount() {
     const { onRegionsRequest } = this.props

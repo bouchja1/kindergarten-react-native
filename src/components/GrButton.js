@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
 
 type Props = {|
   +onPress: () => void,
+  showDifferentRadius: any,
 |}
 
 export default class GrButton extends React.PureComponent<Props> {
@@ -30,10 +31,15 @@ export default class GrButton extends React.PureComponent<Props> {
     this.state = {
       selectedIndex: 2
     }
+    this.buttonRadius = ['1 km', '2 km', '3 km', '5 km', '10 km']
     this.updateIndex = this.updateIndex.bind(this)
   }
   
-  updateIndex = (newSelectedIndex) => {
+  updateIndex = (newSelectedIndex, showDifferentRadius) => {
+    console.log("HOVNO: ", newSelectedIndex)
+    console.log("KM: ", this.buttonRadius[newSelectedIndex])
+    console.log("showDifferentRadius: ", showDifferentRadius)
+    showDifferentRadius(this.buttonRadius[newSelectedIndex])
     this.setState(
       {selectedIndex: newSelectedIndex
       })
@@ -42,13 +48,13 @@ export default class GrButton extends React.PureComponent<Props> {
   
   render() {
     const { selectedIndex } = this.state
-    const buttonRadius = ['1 km', '2 km', '3 km', '5km', '10km']
+    const { showDifferentRadius } = this.props;
     return (
       <View style={styles.container}>
         <ButtonGroup
-        onPress={this.updateIndex}
+        onPress={(event) => this.updateIndex(event, showDifferentRadius)}
         selectedIndex={selectedIndex}
-        buttons={buttonRadius}
+        buttons={this.buttonRadius}
         containerStyle={{height: 30}}
         />
       </View>
