@@ -35,9 +35,11 @@ export default class GrButton extends React.PureComponent<Props> {
     console.log("AAA: ", newSelectedIndex)
     this.setState(() => ({
       selectedIndex: newSelectedIndex,
-    }))
+    }), () => {
+      console.log("SKONCIL JSEM")
+    })
     showDifferentRadius(buttonRadius[newSelectedIndex])
-    console.log("KJKKJKJKJKJKJ")
+    console.log("KJKKJKJKJKJKJ: ", this.state.selectedIndex)
   }
 
   render() {
