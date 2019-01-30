@@ -10,22 +10,24 @@ import { Metrics } from "../themes"
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginVertical: 20,
+    borderWidth: 0.5,
+    borderColor: 'tomato',
+    paddingTop: 20,
+    paddingBottom: 20,
   },
   item: {
     backgroundColor: "white",
-    alignItems: "center",
     justifyContent: "center",
     flex: 1,
     margin: 1,
-    height: 20, // approximate a square
+    marginLeft: 50,
+    height: 40, // approximate a square
+
   },
   itemInvisible: {
     backgroundColor: "transparent",
   },
-  itemText: {
-    color: "black",
-  },
+
 })
 
 const numColumns = 2
@@ -34,9 +36,9 @@ export default class DescTable extends React.PureComponent<Props> {
 
   tableData = (count, min, max) => (
     [
-      { key: "Počet školek v okolí" }, { key: count },
-      { key: "Nejméně naplněná školka (2017)" }, { key: min },
-      { key: "Nejvíce naplněná školka (2017)" }, { key: max },
+      { key: "Počet školek \nv okolí" }, { key: count },
+      { key: "Nejméně naplněná \nškolka (2017)" }, { key: min },
+      { key: "Nejvíce naplněná \nškolka (2017)" }, { key: max },
       // { key: 'L' },
     ])
 

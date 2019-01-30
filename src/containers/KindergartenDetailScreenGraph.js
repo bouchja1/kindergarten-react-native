@@ -1,7 +1,7 @@
 // @flow
 import React from "react"
 import {
-  SafeAreaView, StyleSheet, Text, View,
+  SafeAreaView, StyleSheet, Text, View, ActivityIndicator,
   TextInput, Button, ScrollView, FlatList, ListItem,
 } from "react-native"
 import { ErrorMessage, Formik } from "formik"
@@ -21,11 +21,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.background,
   },
+  superHead: {
+    paddingTop: 20,
+    color: 'tomato',
+    fontWeight: 'bold',
+    fontSize: 20,
+    textAlign: "center",
+  },
   headings: {
     paddingTop: 20,
     paddingBottom: 10,
     fontWeight: "bold",
     textAlign: "center",
+    fontSize: 16,
   },
   ListKindergartens: {
     textAlign: "center",
@@ -33,6 +41,15 @@ const styles = StyleSheet.create({
   text: {
     paddingTop: 10,
   },
+  container1: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10
+  }
 })
 
 
@@ -43,7 +60,7 @@ type Props = {
 
 
 class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
-  static navigationOptions = { title: "Kindergarten detail graph" }
+  static navigationOptions = { title: "Porovnání s okolím" }
 
   state = {
     graphData: null,
@@ -65,7 +82,11 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
   _renderItem = ({ item }) => {
     const school2017Data = item.counts[0]
     if (parseFloat(school2017Data.avg_count) > 0) {
-      return <Text style={styles.ListKindergartens}>{item.red_nazev}: {parseFloat(school2017Data.avg_count)}</Text>
+      return <Text style={styles.ListKindergartens}>{item.red_pln}: {'  '} 
+        <Text style={{color: '#7BDCB5'}}>
+          {parseFloat(school2017Data.avg_count)}
+        </Text>
+      </Text>
     }
     return null;
   }
@@ -83,10 +104,26 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
       })
   }
 
+  showSchoolsInRadius = (dataRadius) => {
+    if (dataRadius.length === 0) {
+      return <Text style={{textAlign: "center", color: '#7BDCB5'}}> 
+      Ve zvoleném okolí není žádná školka </Text>
+    }
+      return <FlatList
+      data={dataRadius}
+      renderItem={this._renderItem}
+      keyExtractor={this._keyExtractor}
+    />
+    }
+
   render() {
     const { graphData } = this.state
     if (!graphData) {
-      return <Text> Načítám pičo </Text>
+      return (
+        <View style={[styles.container1, styles.horizontal]}>
+        <ActivityIndicator size="large" color="tomato" />
+      </View>
+      )
     }
 
     const dataKindergartenOne = []
@@ -160,10 +197,10 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
 
     return (
       <ScrollView>
-        <Text>{graphData.dataKindergarten.red_nazev}</Text>
+        <Text style={styles.superHead}>{graphData.dataKindergarten.red_pln}</Text>
 
         <Text style={styles.headings}>
-          Naplněnost vybrané školky v porovnání s okolím
+          Naplněnost vybrané školky a okolí
         </Text>
 
         <Graph
@@ -181,7 +218,7 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
 
 
         <Text style={styles.headings}>
-          Detaily
+          Detaily o okolí
         </Text>
 
         <DescTable
@@ -191,15 +228,12 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
         />
 
         <Text style={styles.headings}>
-          Seznam školek ve zvoleném okolí
+          Naplněnost jednotlivých školek {"\n"}ve zvoleném okolí
         </Text>
+        
+      {this.showSchoolsInRadius(graphData.dataRadius)}
 
-        <FlatList
-          data={graphData.dataRadius}
-          renderItem={this._renderItem}
-          keyExtractor={this._keyExtractor}
-        />
-
+      
       </ScrollView>
     )
   }

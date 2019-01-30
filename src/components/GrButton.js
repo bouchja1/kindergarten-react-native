@@ -15,7 +15,6 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       paddingTop: 15,
-      backgroundColor: '#ecf0f1',
     },
 })
 
@@ -36,9 +35,6 @@ export default class GrButton extends React.PureComponent<Props> {
   }
   
   updateIndex = (newSelectedIndex, showDifferentRadius) => {
-    console.log("HOVNO: ", newSelectedIndex)
-    console.log("KM: ", this.buttonRadius[newSelectedIndex])
-    console.log("showDifferentRadius: ", showDifferentRadius)
     showDifferentRadius(this.buttonRadius[newSelectedIndex])
     this.setState(
       {selectedIndex: newSelectedIndex
