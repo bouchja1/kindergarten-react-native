@@ -1,9 +1,9 @@
 import { createStackNavigator } from "react-navigation"
-import RegionScreen from "./RegionScreen"
-import TerritoriesScreen from "./TerritoriesScreen"
-import Map from "./Map"
-import ContactContainer from "./Contact"
-import KindergartenDetailScreenGraph from "./KindergartenDetailScreenGraph";
+import RegionScreen from "../RegionScreen"
+import TerritoriesScreen from "../TerritoriesScreen"
+import Map from "../Map"
+import ContactContainer from "../ContactScreen"
+import KindergartenDetailScreenGraph from "../KindergartenDetailScreenGraph";
 import TabNavigator from "./TabNavigator"
 
 const HomeNavigator = createStackNavigator({

@@ -12,7 +12,7 @@ import { reducer as regionsReducer, regionsReqEpic } from "./src/redux/RegionsRe
 import { reducer as graphReducer, kindergartenGraphReqEpic } from './src/redux/GraphRedux'
 
 // containers
-import Navigator from "./src/containers/Navigator"
+import Navigator from "./src/containers/navigator/Navigator"
 
 const logger = createLogger({ collapsed: true })
 const middleware = []
