@@ -1,10 +1,8 @@
 // @flow
 import React from "react"
-import { StyleSheet, Text, View, FlatList, Dimensions } from "react-native"
+import { StyleSheet, Text, View, FlatList } from "react-native"
 
-// theme
-import { Metrics } from "../themes"
-
+import getTwoDecimalRoundedFloat from '../util/format'
 // https://snack.expo.io/@spencercarli/react-native-flatlist-grid
 
 const styles = StyleSheet.create({
@@ -37,8 +35,8 @@ export default class DescTable extends React.PureComponent<Props> {
   tableData = (count, min, max) => (
     [
       { key: "Počet školek \nv okolí" }, { key: count },
-      { key: "Nejméně naplněná \nškolka (2017)" }, { key: min },
-      { key: "Nejvíce naplněná \nškolka (2017)" }, { key: max },
+      { key: "Nejméně naplněná \nškolka (2017)" }, { key: getTwoDecimalRoundedFloat(min) },
+      { key: "Nejvíce naplněná \nškolka (2017)" }, { key: getTwoDecimalRoundedFloat(max) },
       // { key: 'L' },
     ])
 

@@ -9,6 +9,7 @@ import connect from "react-redux/es/connect/connect"
 import { Colors } from "../themes"
 import { Graph, GrButton, DescTable } from "../components"
 import { onKindergartenCountsRequest } from "../redux/GraphRedux"
+import getTwoDecimalRoundedFloat from '../util/format'
 
 const styles = StyleSheet.create({
   container: {
@@ -31,6 +32,7 @@ const styles = StyleSheet.create({
   },
   ListKindergartens: {
     textAlign: "center",
+    marginBottom: 20,
   },
   text: {
     paddingTop: 10,
@@ -71,7 +73,7 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
     if (parseFloat(school2017Data.avg_count) > 0) {
       return <Text style={styles.ListKindergartens}>{item.red_pln}: {"  "}
         <Text style={{ color: "#7BDCB5" }}>
-          {parseFloat(school2017Data.avg_count)}
+          {getTwoDecimalRoundedFloat(parseFloat(school2017Data.avg_count))}
         </Text>
       </Text>
     }
@@ -117,9 +119,6 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
     for (let i = 0; i < kindergartenCounts.length; i++) {
       dataKindergartenOne.push(parseFloat(kindergartenCounts[i].avg_count))
     }
-
-    let radiusMax = 0
-    let radiusMin = 0
 
     for (let i = 0; i < graphData.dataRadius.length; i++) {
       const schoolInRadius = graphData.dataRadius[i]
@@ -169,8 +168,8 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
     const dataRadius = [avg2014, avg2015, avg2016, avg2017]
 
     // max value from array and min value from array
-    radiusMax = (sec2017.length) ? Math.max(...sec2017) : 0
-    radiusMin = (sec2017.length) ? Math.min(...sec2017) : 0
+    const radiusMax = (sec2017.length) ? Math.max(...sec2017) : 0
+    const radiusMin = (sec2017.length) ? Math.min(...sec2017) : 0
 
     return (
       <ScrollView>

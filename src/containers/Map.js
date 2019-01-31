@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import { StyleSheet, SafeAreaView } from "react-native"
+import { StyleSheet, SafeAreaView, View, ActivityIndicator } from "react-native"
 import MapView from "react-native-maps"
 
 import { MarkerModal } from "../components"
@@ -130,7 +130,6 @@ class Map extends Component<Props> {
     const { markerModalVisible } = this.state
 
     const processedCoords = this.processCoords(coords)
-
     return (
       <SafeAreaView style={styles.container}>
         <MapView

@@ -1,20 +1,7 @@
 // @flow
 import React from "react"
-import { StyleSheet, View, SafeAreaView, Text} from "react-native"
+import { StyleSheet, SafeAreaView, Text} from "react-native"
 import { LineChart, YAxis , XAxis, Grid } from 'react-native-svg-charts'
-import * as shape from 'd3-shape'
-import * as scale from 'd3-scale'
-
-// theme
-import { Metrics } from "../themes"
-
-const styles = StyleSheet.create({
-  wrapper: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'transparent',
-
-  },
-})
 
 type Props = {|
   data: any,

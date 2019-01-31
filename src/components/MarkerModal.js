@@ -1,8 +1,10 @@
 // @flow
 import React from "react"
-import { Text, StyleSheet, View } from "react-native"
+import { Text, StyleSheet, View, ActivityIndicator } from "react-native"
 import Modal from "react-native-modal"
 import { Button } from "react-native-elements"
+
+import getTwoDecimalRoundedFloat from '../util/format'
 
 const styles = StyleSheet.create({
   container: {
@@ -15,30 +17,34 @@ const styles = StyleSheet.create({
   },
   innerContainer: {
     backgroundColor: "rgba(255, 255, 255, 0.9)",
-    alignItems: 'stretch',
+    alignItems: "stretch",
     padding: 15,
   },
   textHeading: {
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
     marginTop: 10,
   },
   textName: {
     fontSize: 17,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
   },
-  text: {
-  },
+  text: {},
   buttonsContainer: {
     marginTop: 20,
     marginBottom: 20,
-    flexDirection: 'row'
+    flexDirection: "row",
   },
   button: {
-    backgroundColor: 'tomato',
-  }
+    backgroundColor: "tomato",
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
+  },
 })
 
 export default class MarkerModal extends React.PureComponent<Props> {
@@ -46,6 +52,13 @@ export default class MarkerModal extends React.PureComponent<Props> {
   // Render function is called when props has changed
   render() {
     const { isVisible, closeModal, showGraph, data } = this.props
+    if (!data) {
+      return (
+        <View style={[styles.container, styles.horizontal]}>
+          <ActivityIndicator size="large" color="tomato"/>
+        </View>
+      )
+    }
     return (
       <View style={styles.container}>
         <Modal
@@ -59,16 +72,17 @@ export default class MarkerModal extends React.PureComponent<Props> {
               <View style={styles.text}>
                 <Text style={styles.textName}>{data.red_pln}</Text>
                 <Text style={styles.textHeading}>Naplněnost v r. 2017:</Text>
-                <Text style={{color: "tomato"}}>{data.children_total_attendance}/{data.children_total_capacity} ({data.children_total_attendance/data.children_total_capacity * 100} %)</Text>
+                <Text
+                  style={{ color: "tomato" }}>{data.children_total_attendance}/{data.children_total_capacity} ({getTwoDecimalRoundedFloat(data.children_total_attendance / data.children_total_capacity * 100)} %)</Text>
                 <Text style={styles.textHeading}>Adresa:</Text>
                 <Text>{data.red_nazev}</Text>
                 <Text>{data.red_ulice}</Text>
                 <Text>{data.red_misto}</Text>
                 <Text>{data.red_psc}</Text>
                 <Text style={styles.textHeading}>Kontakt:</Text>
-                { (data.www) ? <Text>{data.www}</Text> : null }
-                { (data.email) ? <Text>{data.email}</Text> : null }
-                { (data.phone) ? <Text>{data.phone}</Text> : null }
+                {(data.www) ? <Text>{data.www}</Text> : null}
+                {(data.email) ? <Text>{data.email}</Text> : null}
+                {(data.phone) ? <Text>{data.phone}</Text> : null}
               </View>
               <View style={styles.buttonsContainer}>
                 <Button
