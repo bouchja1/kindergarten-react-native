@@ -7,10 +7,8 @@ import { createStore, applyMiddleware, combineReducers } from "redux"
 import { createLogger } from "redux-logger"
 import {combineEpics, createEpicMiddleware} from "redux-observable" // fce k inicializaci mdw pro odchytavani akci pro zpracovani epics
 // redux
-import { reducer as moviesReducer } from "./src/redux/MoviesRedux"
 import { reducer as mapReducer, coordinatesReqEpic, kindergartenReqEpic } from "./src/redux/MapRedux"
 import { reducer as regionsReducer, regionsReqEpic } from "./src/redux/RegionsRedux"
-import { reducer as kindergartenReducer, kindergartenRadiusReqEpic } from './src/redux/KindergartenRedux'
 import { reducer as graphReducer, kindergartenGraphReqEpic } from './src/redux/GraphRedux'
 
 // containers
@@ -29,10 +27,8 @@ middleware.push(logger)
 const store = createStore(
   combineReducers(
     {
-      movies: moviesReducer,
       map: mapReducer,
       regions: regionsReducer,
-      kindergarten: kindergartenReducer,
       graph: graphReducer,
     },
   ),
@@ -46,7 +42,6 @@ epicMiddleware.run(combineEpics(
   coordinatesReqEpic,
   regionsReqEpic,
   kindergartenReqEpic,
-  kindergartenRadiusReqEpic,
   kindergartenGraphReqEpic,
 )) // do combine epics se vkladaji ty epics
 

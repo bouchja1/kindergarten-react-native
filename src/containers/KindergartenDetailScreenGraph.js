@@ -219,7 +219,6 @@ class KindergartenDetailScreenGraph extends React.PureComponent<Props> {
 
 const mapStateToProps = (state) => {
   return {
-    kindergartensInRadius: state.kindergarten.schools,
     kindergarten: state.map.kindergarten,
     graphData: state.graph.counts,
     loading: state.graph.loading,

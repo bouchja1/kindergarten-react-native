@@ -2,6 +2,8 @@
 import React from "react"
 import { SafeAreaView, StyleSheet, FlatList, View } from "react-native"
 import { connect } from "react-redux"
+import i18n from "i18n-js"
+import cs from "../i18n/cs"
 
 // components
 import { ListItem } from "../components"
@@ -9,6 +11,8 @@ import { Colors } from "../themes"
 
 // redux
 import { onRegionsRequest } from "../redux/RegionsRedux"
+
+i18n.translations = { cs }
 
 const styles = StyleSheet.create({
   container: {
